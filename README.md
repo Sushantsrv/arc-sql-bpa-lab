@@ -35,6 +35,7 @@ For safest results, ask your agent to show the command first, explain what it ch
 - [Important design note](#important-design-note)
 - [Lab topology](#lab-topology)
 - [Files](#files)
+- [What this lab builds](#what-this-lab-builds)
 - [End-to-end flow](#end-to-end-flow)
 - [Licensing values for the SQL extension](#licensing-values-for-the-sql-extension)
 - [Common high-priority BPA fixes](#common-high-priority-bpa-fixes)
@@ -75,6 +76,28 @@ SQL Server Enterprise edition requires properly licensed Enterprise installation
 | `scripts\10-Summarize-SqlBestPracticesAssessment.ps1` | Admin workstation | Reads `SqlAssessment_CL` from Log Analytics and summarizes BPA findings |
 | `scripts\11-Get-HighPriorityRemediationSteps.ps1` | Admin workstation | Generates Markdown remediation steps for failed high-severity BPA findings |
 | `sql\Check-SqlArcPrereqs.sql` | SQL Server | Checks SQL database state and `NT AUTHORITY\SYSTEM` connectivity requirements |
+
+## What this lab builds
+
+```mermaid
+flowchart LR
+    User["You / local coding agent"] --> Workstation["Admin workstation<br/>PowerShell + Azure CLI"]
+    Workstation --> Azure["Azure subscription<br/>Resource group + providers"]
+    Azure --> SP["Scoped onboarding<br/>service principal"]
+
+    Workstation --> Host["SQL host<br/>Windows PC or VM"]
+    Host --> Sql["SQL Server<br/>Enterprise or lab edition"]
+    Host --> ArcAgent["Azure Connected<br/>Machine Agent"]
+    ArcAgent --> ArcServer["Server - Azure Arc"]
+
+    ArcServer --> SqlExtension["Azure extension<br/>for SQL Server"]
+    SqlExtension --> ArcSql["SQL Server - Azure Arc<br/>discovered SQL instance"]
+    ArcSql --> BPA["SQL best practices<br/>assessment"]
+    BPA --> Monitor["Azure Monitor +<br/>Log Analytics workspace"]
+    Monitor --> Results["BPA findings<br/>CSV / JSON / Markdown remediation"]
+```
+
+The finished lab gives you an Arc-enabled SQL Server host, SQL discovery in Azure, BPA configured through Azure Monitor, and local exports that summarize findings and remediation steps.
 
 ## End-to-end flow
 

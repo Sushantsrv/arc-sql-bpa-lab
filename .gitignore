@@ -1,0 +1,13 @@
+*.log
+*.zip
+*.bak
+*.trn
+*.mdf
+*.ldf
+*.ndf
+*.iso
+*.box
+*.vhd
+*.vhdx
+secrets.*
+*.secret.*

@@ -2,6 +2,46 @@
 
 This repository gives you repeatable PowerShell scripts to install SQL Server Enterprise edition on a Windows 11 Pro-or-above PC, onboard it to Azure Arc for SQL Server, enable SQL best practices assessment (BPA), run BPA on demand and on a schedule, summarize findings, and generate remediation steps for high-priority findings.
 
+## Beginner prompts for your local coding agent
+
+If you are new to Azure Arc, SQL Server, or PowerShell, clone this repository locally and ask your coding agent to guide you one step at a time. Do not paste real passwords, product keys, tenant secrets, or service principal secrets into the chat. Use placeholders until you are ready to run the commands yourself in PowerShell.
+
+Start with this prompt:
+
+```text
+I cloned this repository locally. Read the README and scripts, then walk me through using it on my Windows machine one step at a time. Ask me for only the values you need, use placeholders for secrets, and do not run any command that changes Azure, Windows, Hyper-V, SQL Server, or Arc until I confirm.
+```
+
+Then use the prompt that matches your goal:
+
+| Goal | Prompt to give your agent |
+|---|---|
+| Check my laptop/workstation readiness | `Review this repo and tell me which prerequisites I need before running the Azure Arc SQL BPA lab. Then help me run scripts\00-Check-Prereqs.ps1 safely.` |
+| Prepare Azure resources | `Help me prepare my Azure subscription for this lab using scripts\01-Prepare-AzureTenant.ps1. Explain each required parameter and wait for me to provide the subscription ID, location, and resource group name.` |
+| Build a Hyper-V lab VM | `Help me create a local Hyper-V SQL host VM using scripts\05-Enable-HyperV.ps1 and scripts\06-New-HyperVSqlHost.ps1. First check what ISO path, VM name, memory, and disk size I should use.` |
+| Install SQL Server for the lab | `Help me install SQL Server for this lab using scripts\07-Install-SqlServerEnterprise.ps1. Show me the exact command with placeholders for setup path, product key or evaluation mode, and SQL admin accounts.` |
+| Onboard my SQL host to Azure Arc | `Help me onboard my SQL Server host to Azure Arc using scripts\08-Install-AzureArcForSql.ps1. Ask for the non-secret values first, then show me where to provide the service principal secret directly in PowerShell.` |
+| Validate Arc SQL discovery | `Help me validate that my machine and SQL instance were discovered by Azure Arc using scripts\04-Validate-ArcSql.ps1. Explain what successful output should look like and what to check if SQL resources are missing.` |
+| Enable and run SQL BPA | `Help me enable SQL best practices assessment with scripts\09-Enable-And-Run-SqlBestPracticesAssessment.ps1. Explain Log Analytics, the schedule fields, and how long results may take to appear.` |
+| Summarize BPA results | `Help me summarize the latest SQL BPA findings using scripts\10-Summarize-SqlBestPracticesAssessment.ps1. Show me how to export CSV and JSON results locally without committing them to git.` |
+| Get remediation guidance | `Help me generate high-priority remediation steps using scripts\11-Get-HighPriorityRemediationSteps.ps1, then explain the generated Markdown in beginner-friendly language.` |
+| Clean up the lab | `Help me safely clean up this Azure Arc SQL lab. Start by explaining what azcmagent disconnect and az group delete will remove, then wait for my confirmation before running anything.` |
+
+For safest results, ask your agent to show the command first, explain what it changes, and wait for your approval before running it.
+
+## Table of contents
+
+- [Beginner prompts for your local coding agent](#beginner-prompts-for-your-local-coding-agent)
+- [Important design note](#important-design-note)
+- [Lab topology](#lab-topology)
+- [Files](#files)
+- [End-to-end flow](#end-to-end-flow)
+- [Licensing values for the SQL extension](#licensing-values-for-the-sql-extension)
+- [Common high-priority BPA fixes](#common-high-priority-bpa-fixes)
+- [Publish to GitHub](#publish-to-github)
+- [Customer replication checklist](#customer-replication-checklist)
+- [Cleanup](#cleanup)
+
 ## Important design note
 
 Azure Arc-enabled servers are meant for servers outside Azure, such as on-premises PCs/servers, VMware, Hyper-V, or another cloud. For a learning lab, a Windows 11 Pro/Enterprise/Education PC works. For production-like testing, use a Windows Server host or VM.
@@ -35,33 +75,6 @@ SQL Server Enterprise edition requires properly licensed Enterprise installation
 | `scripts\10-Summarize-SqlBestPracticesAssessment.ps1` | Admin workstation | Reads `SqlAssessment_CL` from Log Analytics and summarizes BPA findings |
 | `scripts\11-Get-HighPriorityRemediationSteps.ps1` | Admin workstation | Generates Markdown remediation steps for failed high-severity BPA findings |
 | `sql\Check-SqlArcPrereqs.sql` | SQL Server | Checks SQL database state and `NT AUTHORITY\SYSTEM` connectivity requirements |
-
-## Beginner prompts for your local coding agent
-
-If you are new to Azure Arc, SQL Server, or PowerShell, clone this repository locally and ask your coding agent to guide you one step at a time. Do not paste real passwords, product keys, tenant secrets, or service principal secrets into the chat. Use placeholders until you are ready to run the commands yourself in PowerShell.
-
-Start with this prompt:
-
-```text
-I cloned this repository locally. Read the README and scripts, then walk me through using it on my Windows machine one step at a time. Ask me for only the values you need, use placeholders for secrets, and do not run any command that changes Azure, Windows, Hyper-V, SQL Server, or Arc until I confirm.
-```
-
-Then use the prompt that matches your goal:
-
-| Goal | Prompt to give your agent |
-|---|---|
-| Check my laptop/workstation readiness | `Review this repo and tell me which prerequisites I need before running the Azure Arc SQL BPA lab. Then help me run scripts\00-Check-Prereqs.ps1 safely.` |
-| Prepare Azure resources | `Help me prepare my Azure subscription for this lab using scripts\01-Prepare-AzureTenant.ps1. Explain each required parameter and wait for me to provide the subscription ID, location, and resource group name.` |
-| Build a Hyper-V lab VM | `Help me create a local Hyper-V SQL host VM using scripts\05-Enable-HyperV.ps1 and scripts\06-New-HyperVSqlHost.ps1. First check what ISO path, VM name, memory, and disk size I should use.` |
-| Install SQL Server for the lab | `Help me install SQL Server for this lab using scripts\07-Install-SqlServerEnterprise.ps1. Show me the exact command with placeholders for setup path, product key or evaluation mode, and SQL admin accounts.` |
-| Onboard my SQL host to Azure Arc | `Help me onboard my SQL Server host to Azure Arc using scripts\08-Install-AzureArcForSql.ps1. Ask for the non-secret values first, then show me where to provide the service principal secret directly in PowerShell.` |
-| Validate Arc SQL discovery | `Help me validate that my machine and SQL instance were discovered by Azure Arc using scripts\04-Validate-ArcSql.ps1. Explain what successful output should look like and what to check if SQL resources are missing.` |
-| Enable and run SQL BPA | `Help me enable SQL best practices assessment with scripts\09-Enable-And-Run-SqlBestPracticesAssessment.ps1. Explain Log Analytics, the schedule fields, and how long results may take to appear.` |
-| Summarize BPA results | `Help me summarize the latest SQL BPA findings using scripts\10-Summarize-SqlBestPracticesAssessment.ps1. Show me how to export CSV and JSON results locally without committing them to git.` |
-| Get remediation guidance | `Help me generate high-priority remediation steps using scripts\11-Get-HighPriorityRemediationSteps.ps1, then explain the generated Markdown in beginner-friendly language.` |
-| Clean up the lab | `Help me safely clean up this Azure Arc SQL lab. Start by explaining what azcmagent disconnect and az group delete will remove, then wait for my confirmation before running anything.` |
-
-For safest results, ask your agent to show the command first, explain what it changes, and wait for your approval before running it.
 
 ## End-to-end flow
 

@@ -2,6 +2,20 @@
 
 This repository gives you repeatable PowerShell scripts to install SQL Server Enterprise edition on a Windows 11 Pro-or-above PC, onboard it to Azure Arc for SQL Server, enable SQL best practices assessment (BPA), run BPA on demand and on a schedule, summarize findings, and generate remediation steps for high-priority findings.
 
+## Table of contents
+
+- [Beginner prompts for your local coding agent](#beginner-prompts-for-your-local-coding-agent)
+- [Important design note](#important-design-note)
+- [Lab topology](#lab-topology)
+- [Files](#files)
+- [What this lab builds](#what-this-lab-builds)
+- [End-to-end flow](#end-to-end-flow)
+- [Licensing values for the SQL extension](#licensing-values-for-the-sql-extension)
+- [Common high-priority BPA fixes](#common-high-priority-bpa-fixes)
+- [Publish to GitHub](#publish-to-github)
+- [Customer replication checklist](#customer-replication-checklist)
+- [Cleanup](#cleanup)
+
 ## Beginner prompts for your local coding agent
 
 If you are new to Azure Arc, SQL Server, or PowerShell, clone this repository locally and ask your coding agent to guide you one step at a time. Do not paste real passwords, product keys, tenant secrets, or service principal secrets into the chat. Use placeholders until you are ready to run the commands yourself in PowerShell.
@@ -28,20 +42,6 @@ Then use the prompt that matches your goal:
 | Clean up the lab | `Help me safely clean up this Azure Arc SQL lab. Start by explaining what azcmagent disconnect and az group delete will remove, then wait for my confirmation before running anything.` |
 
 For safest results, ask your agent to show the command first, explain what it changes, and wait for your approval before running it.
-
-## Table of contents
-
-- [Beginner prompts for your local coding agent](#beginner-prompts-for-your-local-coding-agent)
-- [Important design note](#important-design-note)
-- [Lab topology](#lab-topology)
-- [Files](#files)
-- [What this lab builds](#what-this-lab-builds)
-- [End-to-end flow](#end-to-end-flow)
-- [Licensing values for the SQL extension](#licensing-values-for-the-sql-extension)
-- [Common high-priority BPA fixes](#common-high-priority-bpa-fixes)
-- [Publish to GitHub](#publish-to-github)
-- [Customer replication checklist](#customer-replication-checklist)
-- [Cleanup](#cleanup)
 
 ## Important design note
 
